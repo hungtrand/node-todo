@@ -10,6 +10,12 @@ var methodOverride = require('method-override');
 
 // configuration ===============================================================
 mongoose.connect(database.url); 	// connect to mongoDB database on modulus.io
+mongoose.connection.on('error', function(err) {
+    console.log("###########################");
+    console.log("Database not connected yet.");
+    console.log(err);
+    console.log("###########################");
+});
 
 app.use(express.static('client')); 		// set the static files location /public/img will be /img for users
 app.use(morgan('dev')); // log every request to the console
