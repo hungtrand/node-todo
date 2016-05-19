@@ -54,12 +54,24 @@ angular.module('todoController', [])
                         .then(function(response) {
                             if (response.data.success) {
                                 $scope.todos.splice(index, 1);
+                                setTimeout(function() {
+                                    $scope.$apply();
+                                }, 500);
                             }
                             $scope.loading = false;
                         }, function(failure) {
                             console.log(failure);
                             $scope.loading = false;
                         });
+                }
+
+                $scope.deleteAll = function() {
+                    angular.forEach($scope.todos, function(todoItem, index) {
+                        if(todoItem.completed) {
+                          $scope.delete(todoItem, index);
+                        }       
+
+                    });
                 }
 
                 $scope.toggleCompleted = function(todo, index) {

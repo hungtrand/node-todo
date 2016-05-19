@@ -72,6 +72,11 @@ body 					{ padding-top:50px; }
             <div class="alert alert-info">
                 You have completed {{ countCompleted }} 
                 &amp; snoozed {{ countSnoozed }}
+                <div class="text-right">
+                <button class="btn btn-danger btn-sm" 
+                    ng-click="deleteAll()"
+                    ng-if="countCompleted > 0">Delete Completed</button>
+            </div>
             </div>
 
             <p class="text-center" ng-show="loading">
