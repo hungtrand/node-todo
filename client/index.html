@@ -25,7 +25,11 @@ body 					{ padding-top:50px; }
 <script src="js/controllers/todos-ctrl.js"></script> <!-- load up our controller -->
 <script src="js/services/todos-service.js"></script> <!-- load our todo service -->
 <script src="js/todos-main.js"></script> <!-- load our main application -->
-
+<style>
+    .btn.pull-right {
+        margin-right: 5px;
+    }
+</style>
 </head>
 <!-- SET THE CONTROLLER -->
 <body ng-controller="mainController">
@@ -39,25 +43,28 @@ body 					{ padding-top:50px; }
     <!-- TODO LIST -->
     <div id="todo-list" class="row">
         <div class="col-sm-4 col-sm-offset-4">
+            <div class="list-group">
+                <div class="list-group-item" ng-repeat="todo in todos">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="todo.completed"
+                            ng-change="toggleCompleted(todo)">
+                            <span class="text-warning" ng-if="todo.snoozed">&gt;&gt;</span>
+                            <s ng-if="todo.completed">{{ todo.text }}</s>
+                            <span ng-if="!todo.completed">{{ todo.text }}</span>
+                        </label>
+                        <button class="btn btn-xs btn-danger pull-right" ng-click="delete(todo,
+                            $index)">Delete</button>
 
-            <div class="checkbox"  ng-repeat="todo in todos">
-                <label>
-                    <input type="checkbox" ng-model="todo.completed"
-                    ng-change="toggleCompleted(todo)">
-                    <span class="text-warning" ng-if="todo.snoozed">&gt;&gt;</span>
-                    <s ng-if="todo.completed">{{ todo.text }}</s>
-                    <span ng-if="!todo.completed">{{ todo.text }}</span>
-                </label>
-                
-                <button class="btn btn-xs btn-warning" ng-if="!todo.snoozed &&
-                    !todo.completed" ng-click="snooze(todo,
-                    $index)">Snooze</button>
-                <button class="btn btn-xs btn-warning" ng-if="todo.snoozed &&
-                    !todo.completed"
-                ng-click="unsnooze(todo,
-                    $index)">Unsnooze</button>
-                <button class="btn btn-xs btn-danger" ng-click="delete(todo,
-                    $index)">Delete</button>
+                        <button class="btn btn-xs btn-warning pull-right" ng-if="!todo.snoozed &&
+                            !todo.completed" ng-click="snooze(todo,
+                            $index)">Snooze</button>
+                        <button class="btn btn-xs btn-warning pull-right" ng-if="todo.snoozed &&
+                            !todo.completed"
+                        ng-click="unsnooze(todo,
+                            $index)">Unsnooze</button>
+                    </div> 
+                </div>
             </div>
 
             <div class="alert alert-info">
@@ -66,7 +73,7 @@ body 					{ padding-top:50px; }
             </div>
 
             <p class="text-center" ng-show="loading">
-            <span class="fa fa-spinner fa-spin fa-3x"></span>
+                <span class="fa fa-spinner fa-spin fa-3x"></span>
             </p>
 
         </div>
