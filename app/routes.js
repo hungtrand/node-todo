@@ -49,6 +49,12 @@ module.exports = function(app) {
                         todoItem.completed = false;
                     }
 
+                    if (req.body['snoozed']) {
+                        todoItem.snoozed = true;
+                    } else {
+                        todoItem.snoozed = false;
+                    }
+
                     todoItem.save();
 
                     res.send( { success: true });

@@ -4,6 +4,18 @@ angular.module('todoController', [])
 	.controller('mainController', ['$scope','$http','Todos', function($scope, $http, Todos) {
 		$scope.formData = {};
 		$scope.loading = true;
+                $scope.countCompleted = 0;
+                $scope.countSnoozed = 0;
+                $scope.todos = [];
+
+                $scope.$watch('todos', function() {
+                    $scope.countCompleted = 0;
+                    $scope.countSnoozed = 0;
+                    angular.forEach($scope.todos, function(item, index) {
+                        if (item.completed) $scope.countCompleted++;
+                        if (item.snoozed) $scope.countSnoozed++;
+                    })
+                }, true);
 
 		// GET =====================================================================
 		// when landing on the page, get all todos and show them
@@ -45,17 +57,39 @@ angular.module('todoController', [])
                         });
                 }
 
-                $scope.markCompleted = function(todo, index) {
+                $scope.toggleCompleted = function(todo, index) {
                     Todos
-                        .markCompleted(todo)
+                        .toggleCompleted(todo)
                         .then(function(response) {
-                            if (response.data.success) {
-                                todo.completed = true;
-                            } else {
-                                todo.completed = false;
+                            if (!response.data.success) {
+                                todo.completed = !todo.completed;
                             }
                         })
 
+                }
+
+                $scope.snooze = function(todo, index) {
+                    Todos
+                        .snooze(todo)
+                        .then(function(response) {
+                            if (response.data.success) {
+                                todo.snoozed = true;
+                            } else {
+                                todo.snoozed = false;
+                            }
+                        });
+                }
+
+                $scope.unsnooze = function(todo, index) {
+                    Todos
+                        .unsnooze(todo)
+                        .then(function(response) {
+                            if (response.data.success) {
+                                todo.snoozed = false;
+                            } else {
+                                todo.snoozed = true;
+                            }
+                        });
                 }
 
 	}]);

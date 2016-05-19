@@ -18,13 +18,30 @@ angular.module('todoService', [])
                                 data: data
                             });
                         },
-                        markCompleted: function(todo) {
+                        toggleCompleted: function(todo) {
                             return $http({
                                 url: '/api/todos/' + todo['_id'],
                                 method: 'POST',
-                                data: { completed: true }
+                                data: { completed: todo.completed }
                             });
+                        },
+
+                        snooze: function(todo) {
+                            return $http({
+                                url: '/api/todos/' + todo['_id'],
+                                method: 'POST',
+                                data: { snoozed: true }
+                            })
+                        },
+
+                        unsnooze: function(todo) {
+                            return $http({
+                                url: '/api/todos/' + todo['_id'],
+                                method: 'POST',
+                                data: { snoozed: false }
+                            })
                         }
+
 
 		}
 	}]);
