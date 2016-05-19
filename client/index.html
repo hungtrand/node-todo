@@ -42,12 +42,14 @@ body 					{ padding-top:50px; }
 
             <div class="checkbox"  ng-repeat="todo in todos">
                 <label>
-                    <input type="checkbox"> 
+                    <input type="checkbox" ng-model="todo.completed"
+                    ng-change="markCompleted(todo)"> 
                     <s ng-if="todo.completed">{{ todo.text }}</s>
                     <span ng-if="!todo.completed">{{ todo.text }}</span>
                 </label>
 
-                <button class="btn btn-xs btn-danger" ng-click="delete(todo)">Delete</button>
+                <button class="btn btn-xs btn-danger" ng-click="delete(todo,
+                    $index)">Delete</button>
             </div>
 
             <p class="text-center" ng-show="loading">

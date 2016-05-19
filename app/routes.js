@@ -39,9 +39,30 @@ module.exports = function(app) {
 
 	});
 
+        app.post('/api/todos/:id', function(req, res) {
+            Todo.findById(req.params['id'], function(err, todoItem) {
+                if (!todoItem || err) res.send(err);
+                else {
+                    if (req.body['completed']) {
+                        todoItem.completed = true;
+                    } else {
+                        todoItem.completed = false;
+                    }
+
+                    todoItem.save();
+
+                    res.send( { success: true });
+                }
+            });
+        });
+
         app.delete('/api/todos/:id', function(req, res) {
-            Todo.findOne({ _id: req['_id'] }, function(todoItem) {
-                todoItem.remove();
+            Todo.findById(req.params['id'], function(err, todoItem) {
+                if (!todoItem || err) res.send(err);
+                else {
+                    todoItem.remove();
+                    res.send({ success: true });
+                }
             });
         });
 

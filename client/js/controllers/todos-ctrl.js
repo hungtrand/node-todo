@@ -35,9 +35,27 @@ angular.module('todoController', [])
 			}
 		};
 
-                $scope.delete = function(todo) {
-                    console.log('deleting...');
-                   console.log(todo);
+                $scope.delete = function(todo, index) {
+                    Todos
+                        .delete(todo, { text: todo.text })
+                        .then(function(response) {
+                            if (response.data.success) {
+                                $scope.todos.splice(index, 1);
+                            }
+                        });
+                }
+
+                $scope.markCompleted = function(todo, index) {
+                    Todos
+                        .markCompleted(todo)
+                        .then(function(response) {
+                            if (response.data.success) {
+                                todo.completed = true;
+                            } else {
+                                todo.completed = false;
+                            }
+                        })
+
                 }
 
 	}]);
