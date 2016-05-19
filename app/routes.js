@@ -21,6 +21,7 @@ module.exports = function(app) {
 		getTodos(res);
 	});
 
+        
 	// create todo and send back all todos after creation
 	app.post('/api/todos', function(req, res) {
 
@@ -38,8 +39,14 @@ module.exports = function(app) {
 
 	});
 
+        app.delete('/api/todos/:id', function(req, res) {
+            Todo.findOne({ _id: req['_id'] }, function(todoItem) {
+                todoItem.remove();
+            });
+        });
+
 	// application -------------------------------------------------------------
 	app.get('*', function(req, res) {
-		res.sendfile('./public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
+		res.sendfile('./client/index.html'); // load the single view file (angular will handle the page changes on the front-end)
 	});
 };

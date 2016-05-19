@@ -35,4 +35,9 @@ angular.module('todoController', [])
 			}
 		};
 
+                $scope.delete = function(todo) {
+                    console.log('deleting...');
+                   console.log(todo);
+                }
+
 	}]);
