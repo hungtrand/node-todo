@@ -48,27 +48,39 @@ angular.module('todoController', [])
 		};
 
                 $scope.delete = function(todo, index) {
+                    $scope.loading = true;
                     Todos
                         .delete(todo, { text: todo.text })
                         .then(function(response) {
                             if (response.data.success) {
                                 $scope.todos.splice(index, 1);
                             }
+                            $scope.loading = false;
+                        }, function(failure) {
+                            console.log(failure);
+                            $scope.loading = false;
                         });
                 }
 
                 $scope.toggleCompleted = function(todo, index) {
+                    $scope.loading = true;
                     Todos
                         .toggleCompleted(todo)
                         .then(function(response) {
                             if (!response.data.success) {
                                 todo.completed = !todo.completed;
                             }
-                        })
+
+                            $scope.loading = false;
+                        }, function(failure) {
+                            console.log(failure);
+                            $scope.loading = false;
+                        });
 
                 }
 
                 $scope.snooze = function(todo, index) {
+                    $scope.loading = true;
                     Todos
                         .snooze(todo)
                         .then(function(response) {
@@ -77,10 +89,16 @@ angular.module('todoController', [])
                             } else {
                                 todo.snoozed = false;
                             }
+
+                            $scope.loading = false;
+                        }, function(failure) {
+                            $scope.loading = false;
+                            console.log(failure);
                         });
                 }
 
                 $scope.unsnooze = function(todo, index) {
+                    $scope.loading = true;
                     Todos
                         .unsnooze(todo)
                         .then(function(response) {
@@ -89,6 +107,11 @@ angular.module('todoController', [])
                             } else {
                                 todo.snoozed = true;
                             }
+
+                            $scope.loading = false;
+                        }, function(failure) {
+                            $scope.loading = false;
+                            console.log(failure);
                         });
                 }
 
